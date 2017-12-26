@@ -28,15 +28,12 @@
             android:name=".login.GuideActivity"
             android:theme="@style/LoginTheme">
             <intent-filter>
-
                 <action android:name="com.dazhentech.faithchallengea.ACTION_START" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LOGOUT" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".login.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -46,15 +43,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".login.RegisterLoginActivity"
-            android:theme="@style/AppTheme"/>
-
-        <activity android:name=".MainActivity">
-
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".challenge.ChallengeActivity" />
+        <activity android:name=".reward.RewardActivity" />
+        <activity android:name=".challengehistory.HistoryActivity" />
+        <activity android:name=".userinfo.UserInfoActivity"></activity>
     </application>
 
 </manifest>

@@ -30,5 +30,6 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.5.8'
     compile 'cn.bmob.android:bmob-push:0.8'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
 }
