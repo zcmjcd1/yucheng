@@ -7,4 +7,11 @@
     <color name="colorLogin">#BFBFBF</color>
     <color name="colorLoginTitle">#3366CC</color>
     <color name="white">#FFFFFF</color><!--白色 -->
+
+    <!--开始挑战界面 -->
+    <color name="post_bg">#e9e6c3</color>
+    <color name="post_hint">#808080</color>
+    <color name="post_text">#333333</color>
+    <!--挑战内容字体大小-->
+    <dimen name="post_content_font">15sp</dimen><!--发微博的内容字体大小：15中号，14小号-->
 </resources>

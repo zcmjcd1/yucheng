@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements MomentsFragment.OnFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        moments.performClick();
     }
 
     @Override
