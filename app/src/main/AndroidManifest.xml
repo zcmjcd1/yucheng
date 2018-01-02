@@ -46,7 +46,8 @@
         <activity
             android:name=".login.RegisterLoginActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/MainTheme"/>
         <activity android:name=".challenge.ChallengeActivity" />
         <activity android:name=".reward.RewardActivity" />
         <activity android:name=".challengehistory.HistoryActivity" />

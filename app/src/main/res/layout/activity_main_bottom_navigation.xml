@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
-    tools:context="com.dazhentech.faithchallengea.MainActivity">
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_tab"
-        android:background="#555555">
-    </FrameLayout>
-
+    android:clipChildren="false">
     <View
         android:id="@+id/div_tab_bar"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#ff00ff"
-        android:layout_above="@+id/bottom_tab"/>
+        android:layout_above="@id/bottom_tab"/>
 
     <LinearLayout
         android:id="@+id/bottom_tab"
-        android:baselineAligned="false"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <RelativeLayout
@@ -33,11 +22,10 @@
             android:layout_gravity="bottom"
             android:layout_weight="1">
             <ImageView
-                android:id="@+id/world_moments"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="2dp"
+                android:id="@+id/dd"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
                 android:clickable="true"
                 android:src="@mipmap/globe" />
 
@@ -48,7 +36,7 @@
                 android:text="世界"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/world_moments"/>
+                android:layout_below="@+id/dd"/>
 
         </RelativeLayout>
 
@@ -82,12 +70,11 @@
             android:layout_gravity="bottom"
             android:layout_weight="1">
             <ImageView
-                android:id="@+id/my_profile"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="2dp"
+                android:id="@+id/dd4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:clickable="true"
+                android:layout_centerInParent="true"
                 android:src="@mipmap/profle" />
             <TextView
                 android:padding="2dp"
@@ -96,14 +83,10 @@
                 android:text="我的"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/my_profile"/>
+                android:layout_below="@+id/dd4"/>
 
-        </RelativeLayout>
+        </RelativeLayout>>
 
     </LinearLayout>
 
-
-
-
-    <!--失败者的馈赠游戏-->
 </RelativeLayout>

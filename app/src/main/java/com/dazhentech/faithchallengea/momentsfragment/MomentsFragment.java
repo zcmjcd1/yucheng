@@ -1,14 +1,25 @@
 package com.dazhentech.faithchallengea.momentsfragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dazhentech.faithchallengea.R;
+import com.dazhentech.faithchallengea.adapters.FragmentAdapter;
+import com.dazhentech.faithchallengea.momentsfragment.listfragment.MomentsListFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +30,13 @@ import com.dazhentech.faithchallengea.R;
  * create an instance of this fragment.
  */
 public class MomentsFragment extends Fragment {
+    private TabLayout mTablayout;
+    private ViewPager mContentVp;
+
+    private List<String> tabIndicators;
+    private List<Fragment> tabFragments;
+    private FragmentAdapter mFragmentAdapterAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +58,7 @@ public class MomentsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MomentsFragment.
+     * @return A new instance of fragment WorldFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static MomentsFragment newInstance(String param1, String param2) {
@@ -64,8 +82,20 @@ public class MomentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_moments, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTablayout = view.findViewById(R.id.world_tab_layout);
+        mContentVp = view.findViewById(R.id.world_viewpager);
+        mContentVp.setOffscreenPageLimit(1);
+
+        initContent();
+        initTab();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +135,27 @@ public class MomentsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void initContent() {
+        tabIndicators = new ArrayList<>();
+        tabIndicators.add("未来");
+        tabIndicators.add("伙伴");
+        tabFragments = new ArrayList<>();
+        for ( String s:tabIndicators){
+            mTablayout.addTab(mTablayout.newTab().setText(s));
+            tabFragments.add(new MomentsListFragment());
+        }
+        mFragmentAdapterAdapter = new FragmentAdapter(getActivity().getSupportFragmentManager(), tabFragments, tabIndicators);
+        mContentVp.setAdapter(mFragmentAdapterAdapter);
+
+    }
+    private void initTab() {
+        mTablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mTablayout.setTabTextColors(Color.parseColor("#FFE49E91"), ContextCompat.getColor(getContext(), R.color.white));
+//        mTablayout.setSelectedTabIndicatorColor(ContextCompat.getColor(getContext(), R.color.white));
+        ViewCompat.setElevation(mTablayout,10);
+        mTablayout.setupWithViewPager(mContentVp);
+        mTablayout.setTabsFromPagerAdapter(mFragmentAdapterAdapter);
     }
 }

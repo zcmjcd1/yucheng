@@ -6,4 +6,5 @@
 
     <color name="colorLogin">#BFBFBF</color>
     <color name="colorLoginTitle">#3366CC</color>
+    <color name="white">#FFFFFF</color><!--白色 -->
 </resources>
