@@ -2,12 +2,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.dazhentech.faithchallengea.challenge.finishfragment.FinishFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <cn.iwgang.countdownview.CountdownView
+        android:layout_gravity="center"
+        android:id="@+id/countdown_view_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:isHideTimeBackground="true"
+        app:isShowMinute="false"
+        app:isShowSecond="true"
+        app:isTimeTextBold="true"
+        app:suffixDay="天"
+        app:suffixGravity="bottom"
+        app:suffixHour="时"
+        app:suffixMillisecond="毫秒"
+        app:suffixMinute="分"
+        app:suffixSecond="秒"
+        app:suffixTextColor="#000000"
+        app:suffixTextSize="12sp"
+        app:timeTextColor="#000000"
+        app:timeTextSize="22sp"/>
+
+        <Button
+            android:id="@+id/finish_and_record"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:text="完成并记录收获（就这样吧）" />
+        <Button
+            android:id="@+id/finish_and_continue"
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:text="完成并继续坚持（我还可以）" />
+    </LinearLayout>
+
 
 </FrameLayout>

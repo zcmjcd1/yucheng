@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.dazhentech.faithchallengea.R;
 
@@ -18,7 +19,8 @@ import com.dazhentech.faithchallengea.R;
  * Use the {@link FailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FailFragment extends Fragment {
+public class FailFragment extends Fragment implements View.OnClickListener{
+    private Button tryagain;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,8 +66,11 @@ public class FailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_fail, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fail, container, false);
+        tryagain = view.findViewById(R.id.one_more_try);
+        tryagain.setOnClickListener(this);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +97,15 @@ public class FailFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.one_more_try:
+                mListener.onTryAgainClicked();
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -105,5 +119,6 @@ public class FailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void onTryAgainClicked();
     }
 }

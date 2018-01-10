@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.dazhentech.faithchallengea.R;
 
@@ -18,7 +19,8 @@ import com.dazhentech.faithchallengea.R;
  * Use the {@link StartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartFragment extends Fragment {
+public class StartFragment extends Fragment implements View.OnClickListener {
+    private Button start;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,13 +67,16 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start, container, false);
+        View view = inflater.inflate(R.layout.fragment_start, container, false);
+        start = view.findViewById(R.id.start_count_down);
+        start.setOnClickListener(this);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onButtonClicked();
         }
     }
 
@@ -92,6 +97,15 @@ public class StartFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.start_count_down:
+                mListener.onButtonClicked();
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -104,6 +118,7 @@ public class StartFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+//        void onFragmentInteraction(Uri uri);
+        void onButtonClicked();
     }
 }

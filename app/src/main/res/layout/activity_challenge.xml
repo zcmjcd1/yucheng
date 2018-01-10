@@ -8,29 +8,10 @@
     tools:context="com.dazhentech.faithchallengea.challenge.ChallengeActivity">
 
 
-    <EditText
-        android:id="@+id/idea_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="12.5dp"
-        android:background="@color/post_bg"
-        android:gravity="top"
-        android:hint="挑战内容..."
-        android:inputType="textMultiLine"
-        android:minHeight="100dp"
-        android:textColor="@color/post_text"
-        android:textColorHint="@color/post_hint"
-        android:textSize="@dimen/post_content_font" />
 
-    <Button
-        android:id="@+id/button"
+    <FrameLayout
+        android:id="@+id/challenge_container"
         android:layout_width="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_height="wrap_content"
-        android:text="开始" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

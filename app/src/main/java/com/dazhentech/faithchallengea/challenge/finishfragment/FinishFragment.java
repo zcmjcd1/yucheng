@@ -1,14 +1,19 @@
 package com.dazhentech.faithchallengea.challenge.finishfragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.dazhentech.faithchallengea.R;
+
+import cn.iwgang.countdownview.CountdownView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +23,9 @@ import com.dazhentech.faithchallengea.R;
  * Use the {@link FinishFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FinishFragment extends Fragment {
+public class FinishFragment extends Fragment implements View.OnClickListener{
+    SharedPreferences config;
+    Button finishAndRecord, finishAndContinue;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +72,20 @@ public class FinishFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_finish, container, false);
+        View view = inflater.inflate(R.layout.fragment_finish, container, false);
+        CountdownView mCvCountdownView = view.findViewById(R.id.countdown_view_finish);
+        //倒计时1分钟-60秒*1000=60000millisecond
+        mCvCountdownView.start(10000); // Millisecond
+        mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
+            @Override
+            public void onEnd(CountdownView cv) {
+//                Toast.makeText(getContext(),"计时结束，记录为失败或不做处理", Toast.LENGTH_LONG).show();
+                mListener.onTimeout();
+            }
+        });
+        finishAndRecord.setOnClickListener(this);
+        finishAndContinue.setOnClickListener(this);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +112,20 @@ public class FinishFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.finish_and_continue:
+                //需要左上角一个view显示当前毅力点总和，在点击完成后，根据剩余秒数加毅力点，跳出一个加毅力点的view在总和view右侧，一闪即逝，跳转到倒计时页。（缩小所有fragment的container）
+                //activity容器留出左上角一小块给总和view，和叠加毅力点的view。
+                break;
+            case R.id.finish_and_record:
+                //finish当前activity，根据剩余秒数加毅力点，提交数据库
+                break;
+        }
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -105,5 +139,6 @@ public class FinishFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void onTimeout();
     }
 }

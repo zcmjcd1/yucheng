@@ -1,7 +1,12 @@
 package com.dazhentech.faithchallengea.challenge;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,9 +14,27 @@ import android.view.View;
 
 import com.dazhentech.faithchallengea.BaseActivity;
 import com.dazhentech.faithchallengea.R;
+import com.dazhentech.faithchallengea.challenge.countdownfragment.BackHandledInterface;
+import com.dazhentech.faithchallengea.challenge.countdownfragment.CountDownFragment;
+import com.dazhentech.faithchallengea.challenge.failfragment.FailFragment;
+import com.dazhentech.faithchallengea.challenge.finishfragment.FinishFragment;
+import com.dazhentech.faithchallengea.challenge.startfragment.StartFragment;
+import com.dazhentech.faithchallengea.challenge.succeedfragment.SucceedFragment;
 
-public class ChallengeActivity extends BaseActivity {
+public class ChallengeActivity extends BaseActivity implements CountDownFragment.OnFragmentInteractionListener,StartFragment.OnFragmentInteractionListener,
+FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteractionListener, BackHandledInterface, FinishFragment.OnFragmentInteractionListener {
     ActionBar mActionBar;
+    StartFragment startFragment;
+    CountDownFragment countDownFragment;
+    FailFragment failFragment;
+    SucceedFragment succeedFragment;
+    FinishFragment finishFragment;
+    FragmentManager fragmentManager;
+//    FragmentTransaction ft;
+
+    boolean pendingChallenge = false;
+
+
 
     @Override
     public void widgetClick(View v) {
@@ -21,7 +44,19 @@ public class ChallengeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        if (!pendingChallenge){
+            ft.replace(R.id.challenge_container,getStartFragment());
+        }
+        ft.commit();
 
+    }
+    public StartFragment getStartFragment(){
+        if (startFragment==null){
+            startFragment = new StartFragment();
+        }
+        return startFragment;
     }
 
     @Override
@@ -65,5 +100,84 @@ public class ChallengeActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onTryAgainClicked() {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        startFragment = new StartFragment();
+        ft.replace(R.id.challenge_container,startFragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onTimeout() {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        failFragment = new FailFragment();
+        ft.replace(R.id.challenge_container,failFragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onButtonClicked() {
+        pendingChallenge = true;
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        countDownFragment = new CountDownFragment();
+        ft.replace(R.id.challenge_container,countDownFragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (countDownFragment == null) {
+            super.onBackPressed();
+        } else {
+            //处理
+            showNormalDialog();
+        }
+    }
+
+    @Override
+    public void setSelectedFragment(CountDownFragment selectedFragment) {
+        this.countDownFragment = selectedFragment;
+    }
+
+    public void showNormalDialog(){
+        final AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(ChallengeActivity.this);
+        normalDialog.setIcon(R.mipmap.delete);
+        normalDialog.setTitle("退出挑战");
+        normalDialog.setMessage("退出不退还押金，是否退出？");
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //...To-do
+                        finish();
+                    }
+                });
+        normalDialog.setNegativeButton("关闭",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //...To-do
+                    }
+                });
+        // 显示
+        normalDialog.show();
+
+    }
+
+    @Override
+    public void onTimeReached() {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        finishFragment = new FinishFragment();
+        ft.replace(R.id.challenge_container,finishFragment);
+        ft.commit();
     }
 }

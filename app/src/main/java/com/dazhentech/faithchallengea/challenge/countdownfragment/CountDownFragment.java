@@ -4,11 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dazhentech.faithchallengea.R;
+
+import cn.iwgang.countdownview.CountdownView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +23,9 @@ import com.dazhentech.faithchallengea.R;
  * create an instance of this fragment.
  */
 public class CountDownFragment extends Fragment {
+    private boolean mHandledPress = false;
+    private BackHandledInterface backHandledInterface;
+//    private CountdownView countDownView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +36,12 @@ public class CountDownFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        backHandledInterface.setSelectedFragment(this);
+    }
 
     public CountDownFragment() {
         // Required empty public constructor
@@ -65,13 +78,29 @@ public class CountDownFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_count_down, container, false);
+        View view = inflater.inflate(R.layout.fragment_count_down, container, false);
+        CountdownView mCvCountdownView = view.findViewById(R.id.countdown_view);
+        //倒计时1分钟-60秒*1000=60000millisecond
+        mCvCountdownView.start(3000); // Millisecond
+        mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
+            @Override
+            public void onEnd(CountdownView cv) {
+//                Toast.makeText(getContext(),"计时结束，填收获",Toast.LENGTH_LONG).show();
+                mListener.onTimeReached();
+            }
+        });
+
+// or
+//        for (int time = 0; time < 1000; time++) {
+//            mCvCountdownView.updateShow(time);
+//        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onTimeReached();
         }
     }
 
@@ -83,6 +112,9 @@ public class CountDownFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+        if (context instanceof BackHandledInterface) {
+            backHandledInterface = (BackHandledInterface) context;
         }
     }
 
@@ -104,6 +136,17 @@ public class CountDownFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onTimeReached();
     }
+
+    public boolean onBackPressed(){
+        if(!mHandledPress){
+            Log.i("countdown-back","回退处理");
+            mHandledPress=true;
+            return true;
+        }
+        return false;
+
+    }
+
 }
