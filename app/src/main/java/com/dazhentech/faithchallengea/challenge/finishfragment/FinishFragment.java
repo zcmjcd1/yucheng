@@ -127,48 +127,48 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
                 long remaintime = mCvCountdownView.getRemainTime();
                 config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = config.edit();
+                boolean lastcombo = config.getBoolean("lastcombo",false);
+                int lastadd = config.getInt("lastadd",0);
+                int thistrialsum = config.getInt("thistrialsum",0);
                 if(remaintime>=8000L){
-                    int todaysum = config.getInt("todaysum",0);
-                    if (todaysum==0){
-                        editor.putInt("todaysum",0+2);
-                    }
-                    int thistrialsum = config.getInt("thistrialsum",0);
-                    if (thistrialsum ==0){
-                        editor.putInt("thistrialsum",0+2);
-                    }
+                    updateThisTrialRecord(thistrialsum,editor,2,2,false);
                 } else if((remaintime<8000L && remaintime>=6000)||(remaintime<4000L&& remaintime>=0L)){
-                    int todaysum = config.getInt("todaysum",0);
-                    if (todaysum==0){
-                        editor.putInt("todaysum",0+1);
-                    }
-                    int thistrialsum = config.getInt("thistrialsum",0);
-                    if (thistrialsum ==0){
-                        editor.putInt("thistrialsum",0+1);
-                    }
+                    updateThisTrialRecord(thistrialsum,editor,1,1,false);
                 } else if ((remaintime<6000L && remaintime>=5500L) ||(remaintime<4500L&& remaintime>=4000L)){
-                    int todaysum = config.getInt("todaysum",0);
-                    if (todaysum==0){
-                        editor.putInt("todaysum",0+2);
+                    if(!lastcombo){
+                        if(lastadd==2){
+                            updateThisTrialRecord(thistrialsum,editor,4,4,true);
+                        }else {
+                            updateThisTrialRecord(thistrialsum,editor,2,2,true);
+                        }
+                    }else {
+                        updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
                     }
-                    int thistrialsum = config.getInt("thistrialsum",0);
-                    if (thistrialsum ==0){
-                        editor.putInt("thistrialsum",0+2);
-                    }
+
                 } else if (remaintime<5500L && remaintime>=4500L){
-                    int todaysum = config.getInt("todaysum",0);
-                    if (todaysum==0){
-                        editor.putInt("todaysum",0+4);
+                    if(!lastcombo){
+                        updateThisTrialRecord(thistrialsum,editor,4,4,true);
+                    }else {
+                        updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
                     }
-                    int thistrialsum = config.getInt("thistrialsum",0);
-                    if (thistrialsum ==0){
-                        editor.putInt("thistrialsum",0+4);
-                    }
+                } else {
+                    updateThisTrialRecord(thistrialsum,editor,1,1,false);
                 }
-                editor.commit();
-                Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("todaysum",0),Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("lastadd",0),Toast.LENGTH_LONG).show();
                 break;
         }
 
+    }
+    public void updateThisTrialRecord (int thistrialsum, SharedPreferences.Editor mEditor,int add,int lastadd,boolean lastcombo){
+        if (thistrialsum ==0){
+            mEditor.putInt("thistrialsum",add);
+        } else {
+            mEditor.putInt("thistrialsum",thistrialsum+add);
+        }
+        mEditor.putInt("lastadd",lastadd);
+        mEditor.putBoolean("lastcombo",lastcombo);
+        mEditor.commit();
     }
 
     /**
