@@ -25,6 +25,7 @@ import cn.iwgang.countdownview.CountdownView;
  */
 public class FinishFragment extends Fragment implements View.OnClickListener{
     SharedPreferences config;
+    CountdownView mCvCountdownView;
     Button finishAndRecord, finishAndContinue;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,7 +74,7 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_finish, container, false);
-        CountdownView mCvCountdownView = view.findViewById(R.id.countdown_view_finish);
+        mCvCountdownView = view.findViewById(R.id.countdown_view_finish);
         //倒计时1分钟-60秒*1000=60000millisecond
         mCvCountdownView.start(10000); // Millisecond
         mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
@@ -83,6 +84,8 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
                 mListener.onTimeout();
             }
         });
+        finishAndRecord = view.findViewById(R.id.finish_and_record);
+        finishAndContinue = view.findViewById(R.id.finish_and_continue);
         finishAndRecord.setOnClickListener(this);
         finishAndContinue.setOnClickListener(this);
         return view;
@@ -121,6 +124,48 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.finish_and_record:
                 //finish当前activity，根据剩余秒数加毅力点，提交数据库
+                long remaintime = mCvCountdownView.getRemainTime();
+                config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = config.edit();
+                if(remaintime>=8000L){
+                    int todaysum = config.getInt("todaysum",0);
+                    if (todaysum==0){
+                        editor.putInt("todaysum",0+2);
+                    }
+                    int thistrialsum = config.getInt("thistrialsum",0);
+                    if (thistrialsum ==0){
+                        editor.putInt("thistrialsum",0+2);
+                    }
+                } else if((remaintime<8000L && remaintime>=6000)||(remaintime<4000L&& remaintime>=0L)){
+                    int todaysum = config.getInt("todaysum",0);
+                    if (todaysum==0){
+                        editor.putInt("todaysum",0+1);
+                    }
+                    int thistrialsum = config.getInt("thistrialsum",0);
+                    if (thistrialsum ==0){
+                        editor.putInt("thistrialsum",0+1);
+                    }
+                } else if ((remaintime<6000L && remaintime>=5500L) ||(remaintime<4500L&& remaintime>=4000L)){
+                    int todaysum = config.getInt("todaysum",0);
+                    if (todaysum==0){
+                        editor.putInt("todaysum",0+2);
+                    }
+                    int thistrialsum = config.getInt("thistrialsum",0);
+                    if (thistrialsum ==0){
+                        editor.putInt("thistrialsum",0+2);
+                    }
+                } else if (remaintime<5500L && remaintime>=4500L){
+                    int todaysum = config.getInt("todaysum",0);
+                    if (todaysum==0){
+                        editor.putInt("todaysum",0+4);
+                    }
+                    int thistrialsum = config.getInt("thistrialsum",0);
+                    if (thistrialsum ==0){
+                        editor.putInt("thistrialsum",0+4);
+                    }
+                }
+                editor.commit();
+                Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("todaysum",0),Toast.LENGTH_LONG).show();
                 break;
         }
 
