@@ -121,42 +121,56 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
             case R.id.finish_and_continue:
                 //需要左上角一个view显示当前毅力点总和，在点击完成后，根据剩余秒数加毅力点，跳出一个加毅力点的view在总和view右侧，一闪即逝，跳转到倒计时页。（缩小所有fragment的container）
                 //activity容器留出左上角一小块给总和view，和叠加毅力点的view。
+                finishOneCount();
+                mListener.onRepeatTrial();
                 break;
             case R.id.finish_and_record:
-                //finish当前activity，根据剩余秒数加毅力点，提交数据库
-                long remaintime = mCvCountdownView.getRemainTime();
-                config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+                finishOneCount();
+                submit();
                 SharedPreferences.Editor editor = config.edit();
-                boolean lastcombo = config.getBoolean("lastcombo",false);
-                int lastadd = config.getInt("lastadd",0);
-                int thistrialsum = config.getInt("thistrialsum",0);
-                if(remaintime>=8000L){
-                    updateThisTrialRecord(thistrialsum,editor,2,2,false);
-                } else if((remaintime<8000L && remaintime>=6000)||(remaintime<4000L&& remaintime>=0L)){
-                    updateThisTrialRecord(thistrialsum,editor,1,1,false);
-                } else if ((remaintime<6000L && remaintime>=5500L) ||(remaintime<4500L&& remaintime>=4000L)){
-                    if(!lastcombo){
-                        if(lastadd==2){
-                            updateThisTrialRecord(thistrialsum,editor,4,4,true);
-                        }else {
-                            updateThisTrialRecord(thistrialsum,editor,2,2,true);
-                        }
-                    }else {
-                        updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
-                    }
-
-                } else if (remaintime<5500L && remaintime>=4500L){
-                    if(!lastcombo){
-                        updateThisTrialRecord(thistrialsum,editor,4,4,true);
-                    }else {
-                        updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
-                    }
-                } else {
-                    updateThisTrialRecord(thistrialsum,editor,1,1,false);
-                }
-
+                editor.putBoolean("lastcombo",false);
+                editor.putInt("lastadd",0);
+                editor.putInt("thistrialsum",0);
+                mListener.onTrialFinish();
                 Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("lastadd",0),Toast.LENGTH_LONG).show();
                 break;
+        }
+
+    }
+    public void submit(){
+
+    }
+    public void finishOneCount (){
+        //finish当前activity，根据剩余秒数加毅力点，提交数据库
+        long remaintime = mCvCountdownView.getRemainTime();
+        config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = config.edit();
+        boolean lastcombo = config.getBoolean("lastcombo",false);
+        int lastadd = config.getInt("lastadd",0);
+        int thistrialsum = config.getInt("thistrialsum",0);
+        if(remaintime>=8000L){
+            updateThisTrialRecord(thistrialsum,editor,2,2,false);
+        } else if((remaintime<8000L && remaintime>=6000)||(remaintime<4000L&& remaintime>=0L)){
+            updateThisTrialRecord(thistrialsum,editor,1,1,false);
+        } else if ((remaintime<6000L && remaintime>=5500L) ||(remaintime<4500L&& remaintime>=4000L)){
+            if(!lastcombo){
+                if(lastadd==2){
+                    updateThisTrialRecord(thistrialsum,editor,4,4,true);
+                }else {
+                    updateThisTrialRecord(thistrialsum,editor,2,2,true);
+                }
+            }else {
+                updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
+            }
+
+        } else if (remaintime<5500L && remaintime>=4500L){
+            if(!lastcombo){
+                updateThisTrialRecord(thistrialsum,editor,4,4,true);
+            }else {
+                updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
+            }
+        } else {
+            updateThisTrialRecord(thistrialsum,editor,1,1,false);
         }
 
     }
@@ -185,5 +199,7 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
         void onTimeout();
+        void onTrialFinish();
+        void onRepeatTrial();
     }
 }
