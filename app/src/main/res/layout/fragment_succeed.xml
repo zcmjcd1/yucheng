@@ -5,9 +5,33 @@
     tools:context="com.dazhentech.faithchallengea.challenge.succeedfragment.SucceedFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/idea_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="12.5dp"
+            android:background="@color/post_bg"
+            android:gravity="top"
+            android:hint="请尽量详细地填写这次挑战的实际收获，将来或可自己正名，亦可为他人指路！"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:textColor="@color/post_text"
+            android:textColorHint="@color/post_hint"
+            android:textSize="@dimen/post_content_font" />
+
+        <Button
+            android:id="@+id/succeed_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="提交收获" />
+    </LinearLayout>
+
 
 </FrameLayout>

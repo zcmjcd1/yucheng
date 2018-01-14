@@ -81,7 +81,7 @@ public class CountDownFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_count_down, container, false);
         CountdownView mCvCountdownView = view.findViewById(R.id.countdown_view);
         //倒计时1分钟-60秒*1000=60000millisecond
-        mCvCountdownView.start(3000); // Millisecond
+        mCvCountdownView.start(4000); // Millisecond
         mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
             @Override
             public void onEnd(CountdownView cv) {

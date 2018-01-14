@@ -76,7 +76,7 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_finish, container, false);
         mCvCountdownView = view.findViewById(R.id.countdown_view_finish);
         //倒计时1分钟-60秒*1000=60000millisecond
-        mCvCountdownView.start(10000); // Millisecond
+        mCvCountdownView.start(9000); // Millisecond
         mCvCountdownView.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
             @Override
             public void onEnd(CountdownView cv) {
@@ -131,8 +131,9 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
                 editor.putBoolean("lastcombo",false);
                 editor.putInt("lastadd",0);
                 editor.putInt("thistrialsum",0);
-                mListener.onTrialFinish();
                 Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("lastadd",0),Toast.LENGTH_LONG).show();
+                editor.commit();
+                mListener.onTrialFinish();
                 break;
         }
 
@@ -146,8 +147,10 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
         config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = config.edit();
         boolean lastcombo = config.getBoolean("lastcombo",false);
+        System.out.println(lastcombo);
         int lastadd = config.getInt("lastadd",0);
         int thistrialsum = config.getInt("thistrialsum",0);
+        System.out.println(remaintime);
         if(remaintime>=8000L){
             updateThisTrialRecord(thistrialsum,editor,2,2,false);
         } else if((remaintime<8000L && remaintime>=6000)||(remaintime<4000L&& remaintime>=0L)){
@@ -165,8 +168,10 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
 
         } else if (remaintime<5500L && remaintime>=4500L){
             if(!lastcombo){
+                System.out.println("222222222222");
                 updateThisTrialRecord(thistrialsum,editor,4,4,true);
             }else {
+                System.out.println("33333333333");
                 updateThisTrialRecord(thistrialsum,editor,2+lastadd,2+lastadd,true);
             }
         } else {

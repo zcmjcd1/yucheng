@@ -124,7 +124,20 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     }
 
     @Override
-    public void onButtonClicked() {
+    public void onTrialFinish() {
+        finish();
+    }
+
+    @Override
+    public void onRepeatTrial() {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        countDownFragment = new CountDownFragment();
+        ft.replace(R.id.challenge_container,countDownFragment);
+        ft.commit();
+    }
+
+    @Override
+    public void onButtonClicked(String selectedTag) {
         pendingChallenge = true;
         FragmentTransaction ft = fragmentManager.beginTransaction();
         countDownFragment = new CountDownFragment();
@@ -179,5 +192,10 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         finishFragment = new FinishFragment();
         ft.replace(R.id.challenge_container,finishFragment);
         ft.commit();
+    }
+
+    @Override
+    public void onSucceedSubmitButtonClick() {
+        finish();
     }
 }

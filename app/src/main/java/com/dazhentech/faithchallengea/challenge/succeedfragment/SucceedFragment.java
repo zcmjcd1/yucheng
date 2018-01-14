@@ -18,7 +18,7 @@ import com.dazhentech.faithchallengea.R;
  * Use the {@link SucceedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SucceedFragment extends Fragment {
+public class SucceedFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,7 +71,7 @@ public class SucceedFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onSucceedSubmitButtonClick();
         }
     }
 
@@ -92,6 +92,19 @@ public class SucceedFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.succeed_submit:
+                submitGot();
+                mListener.onSucceedSubmitButtonClick();
+                break;
+        }
+    }
+    public void submitGot(){
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -104,6 +117,6 @@ public class SucceedFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onSucceedSubmitButtonClick();
     }
 }

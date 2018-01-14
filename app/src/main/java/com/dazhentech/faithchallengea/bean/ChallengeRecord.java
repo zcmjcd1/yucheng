@@ -7,9 +7,8 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class ChallengeRecord extends BmobObject {
-    private String expect_gain;
+    private String tag;
     private String real_gain;
-    private String content;
     private Integer cost;
     private Boolean result;
     private MidTermGoal midterm_goal;
@@ -17,12 +16,12 @@ public class ChallengeRecord extends BmobObject {
     private Integer period_minute;
     private ChallengeHall hall;
 
-    public String getExpect_gain() {
-        return expect_gain;
+    public String getTag() {
+        return tag;
     }
 
-    public void setExpect_gain(String expect_gain) {
-        this.expect_gain = expect_gain;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getReal_gain() {
@@ -31,14 +30,6 @@ public class ChallengeRecord extends BmobObject {
 
     public void setReal_gain(String real_gain) {
         this.real_gain = real_gain;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Integer getCost() {
