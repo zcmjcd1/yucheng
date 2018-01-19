@@ -25,6 +25,9 @@ import com.dazhentech.faithchallengea.challenge.succeedfragment.SucceedFragment;
 
 import org.w3c.dom.Text;
 
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
 public class ChallengeActivity extends BaseActivity implements CountDownFragment.OnFragmentInteractionListener,StartFragment.OnFragmentInteractionListener,
 FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteractionListener, BackHandledInterface, FinishFragment.OnFragmentInteractionListener {
     ActionBar mActionBar;
@@ -34,7 +37,7 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     SucceedFragment succeedFragment;
     FinishFragment finishFragment;
     FragmentManager fragmentManager;
-    SharedPreferences config = this.getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+    SharedPreferences config;
 
 //    FragmentTransaction ft;
 
@@ -72,7 +75,7 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         setAllowFullScreen(false);
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
-        thisTrialScore = (TextView) findViewById(R.id.challenge_score);
+        config = getApplicationContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
 
     }
 
@@ -132,7 +135,14 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     }
 
     public void updateThisTrialSccore(){
-        thisTrialScore.setText(config.getInt("thistrialsum",0));
+        try{
+            int myScore = config.getInt("thistrialsum",0);
+            thisTrialScore = (TextView) findViewById(R.id.challenge_score);
+            thisTrialScore.setText(String.valueOf(myScore));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

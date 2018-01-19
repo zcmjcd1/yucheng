@@ -139,7 +139,7 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
     public void finishOneCount (){
         //finish当前activity，根据剩余秒数加毅力点，提交数据库
         long remaintime = mCvCountdownView.getRemainTime();
-        config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+        config = getContext().getApplicationContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = config.edit();
         boolean lastcombo = config.getBoolean("lastcombo",false);
         System.out.println(lastcombo);

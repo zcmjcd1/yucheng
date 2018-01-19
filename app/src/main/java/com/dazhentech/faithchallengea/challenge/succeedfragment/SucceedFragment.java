@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.dazhentech.faithchallengea.R;
 
+import java.util.Locale;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -81,8 +83,14 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
         profession = view.findViewById(R.id.succeed_profession_added);
         submitGain = view.findViewById(R.id.succeed_submit);
         gain = view.findViewById(R.id.succeed_real_gain);
-        config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
-        score.setText(config.getInt("thistrialsum",0));
+        try{
+            config = getContext().getApplicationContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+            String str = String.format(Locale.US,"毅力点+%d",config.getInt("thistrialsum",0));
+            score.setText(str);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return view;
     }
 
