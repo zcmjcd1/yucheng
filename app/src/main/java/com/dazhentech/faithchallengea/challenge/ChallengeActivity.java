@@ -2,6 +2,7 @@ package com.dazhentech.faithchallengea.challenge;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.dazhentech.faithchallengea.BaseActivity;
 import com.dazhentech.faithchallengea.R;
@@ -21,6 +23,8 @@ import com.dazhentech.faithchallengea.challenge.finishfragment.FinishFragment;
 import com.dazhentech.faithchallengea.challenge.startfragment.StartFragment;
 import com.dazhentech.faithchallengea.challenge.succeedfragment.SucceedFragment;
 
+import org.w3c.dom.Text;
+
 public class ChallengeActivity extends BaseActivity implements CountDownFragment.OnFragmentInteractionListener,StartFragment.OnFragmentInteractionListener,
 FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteractionListener, BackHandledInterface, FinishFragment.OnFragmentInteractionListener {
     ActionBar mActionBar;
@@ -30,9 +34,12 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     SucceedFragment succeedFragment;
     FinishFragment finishFragment;
     FragmentManager fragmentManager;
+    SharedPreferences config = this.getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+
 //    FragmentTransaction ft;
 
     boolean pendingChallenge = false;
+    TextView thisTrialScore;
 
 
 
@@ -65,6 +72,7 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         setAllowFullScreen(false);
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
+        thisTrialScore = (TextView) findViewById(R.id.challenge_score);
 
     }
 
@@ -123,13 +131,22 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         ft.commit();
     }
 
+    public void updateThisTrialSccore(){
+        thisTrialScore.setText(config.getInt("thistrialsum",0));
+    }
+
     @Override
     public void onTrialFinish() {
-        finish();
+        updateThisTrialSccore();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        succeedFragment = new SucceedFragment();
+        ft.replace(R.id.challenge_container,succeedFragment);
+        ft.commit();
     }
 
     @Override
     public void onRepeatTrial() {
+        updateThisTrialSccore();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         countDownFragment = new CountDownFragment();
         ft.replace(R.id.challenge_container,countDownFragment);
@@ -138,6 +155,11 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
 
     @Override
     public void onButtonClicked(String selectedTag) {
+        SharedPreferences.Editor editor = config.edit();
+        editor.putBoolean("lastcombo",false);
+        editor.putInt("lastadd",0);
+        editor.putInt("thistrialsum",0);
+        editor.apply();
         pendingChallenge = true;
         FragmentTransaction ft = fragmentManager.beginTransaction();
         countDownFragment = new CountDownFragment();

@@ -1,12 +1,16 @@
 package com.dazhentech.faithchallengea.challenge.succeedfragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dazhentech.faithchallengea.R;
 
@@ -19,6 +23,11 @@ import com.dazhentech.faithchallengea.R;
  * create an instance of this fragment.
  */
 public class SucceedFragment extends Fragment implements View.OnClickListener {
+
+    private TextView score,body,heart,profession;
+    private Button submitGain;
+    private EditText gain;
+    private SharedPreferences config;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +74,16 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_succeed, container, false);
+        View view = inflater.inflate(R.layout.fragment_succeed, container, false);
+        score = view.findViewById(R.id.succeed_score_added);
+        body = view.findViewById(R.id.succeed_body_added);
+        heart = view.findViewById(R.id.succeed_heart_added);
+        profession = view.findViewById(R.id.succeed_profession_added);
+        submitGain = view.findViewById(R.id.succeed_submit);
+        gain = view.findViewById(R.id.succeed_real_gain);
+        config = getContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
+        score.setText(config.getInt("thistrialsum",0));
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

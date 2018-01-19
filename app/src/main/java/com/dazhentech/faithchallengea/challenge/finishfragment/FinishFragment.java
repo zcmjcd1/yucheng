@@ -127,12 +127,7 @@ public class FinishFragment extends Fragment implements View.OnClickListener{
             case R.id.finish_and_record:
                 finishOneCount();
                 submit();
-                SharedPreferences.Editor editor = config.edit();
-                editor.putBoolean("lastcombo",false);
-                editor.putInt("lastadd",0);
-                editor.putInt("thistrialsum",0);
                 Toast.makeText(getContext(),"current time:"+config.getInt("thistrialsum",0)+"today: "+config.getInt("lastadd",0),Toast.LENGTH_LONG).show();
-                editor.commit();
                 mListener.onTrialFinish();
                 break;
         }

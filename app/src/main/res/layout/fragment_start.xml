@@ -24,27 +24,31 @@
             android:textColor="@color/post_text"
             android:textColorHint="@color/post_hint"
             android:textSize="@dimen/post_content_font" />
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/start_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingStart="20dp">
             <RadioButton
+                android:id="@+id/start_heart"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="心灵" />
             <RadioButton
+                android:id="@+id/start_body"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="身体" />
             <RadioButton
+                android:id="@+id/start_profession"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="运动" />
-        </LinearLayout>
+                android:text="专业" />
+        </RadioGroup>
 
 
 

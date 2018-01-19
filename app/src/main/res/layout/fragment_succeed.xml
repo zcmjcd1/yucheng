@@ -9,8 +9,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="本次挑战"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/succeed_score_added"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="毅力点+0"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/succeed_body_added"
+            android:text="体质+0"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/succeed_heart_added"
+            android:text="精神+0"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/succeed_profession_added"
+            android:text="法力+0"/>
+
         <EditText
-            android:id="@+id/idea_content"
+            android:id="@+id/succeed_real_gain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7dp"
