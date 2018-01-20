@@ -7,14 +7,32 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class ChallengeRecord extends BmobObject {
+    private AppUser user;
     private String tag;
     private String real_gain;
+    private Integer score;
     private Integer cost;
     private Boolean result;
     private MidTermGoal midterm_goal;
     private String day;
     private Integer period_minute;
-    private ChallengeHall hall;
+
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 
     public String getTag() {
         return tag;
@@ -72,11 +90,4 @@ public class ChallengeRecord extends BmobObject {
         this.period_minute = period_minute;
     }
 
-    public ChallengeHall getHall() {
-        return hall;
-    }
-
-    public void setHall(ChallengeHall hall) {
-        this.hall = hall;
-    }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dazhentech.faithchallengea.R;
 
@@ -82,6 +83,7 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
         heart = view.findViewById(R.id.succeed_heart_added);
         profession = view.findViewById(R.id.succeed_profession_added);
         submitGain = view.findViewById(R.id.succeed_submit);
+        submitGain.setOnClickListener(this);
         gain = view.findViewById(R.id.succeed_real_gain);
         try{
             config = getContext().getApplicationContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
@@ -92,13 +94,6 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
         }
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onSucceedSubmitButtonClick();
-        }
     }
 
     @Override
@@ -122,13 +117,20 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.succeed_submit:
-                submitGot();
-                mListener.onSucceedSubmitButtonClick();
+                if(checkEmptyEditText()){
+                    Toast.makeText(getActivity(),"请输入你的收获！",Toast.LENGTH_LONG).show();
+                }else {
+                    mListener.onSucceedSubmitButtonClick(gain.getText().toString());
+                }
                 break;
         }
     }
-    public void submitGot(){
-
+    public boolean checkEmptyEditText (){
+        if (gain.getText()!=null && gain.getText().length()>0){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     /**
@@ -143,6 +145,6 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onSucceedSubmitButtonClick();
+        void onSucceedSubmitButtonClick(String gain);
     }
 }

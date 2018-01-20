@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 
 import com.dazhentech.faithchallengea.BaseActivity;
 import com.dazhentech.faithchallengea.R;
+import com.dazhentech.faithchallengea.bean.AppUser;
+import com.dazhentech.faithchallengea.bean.ChallengeRecord;
 import com.dazhentech.faithchallengea.challenge.countdownfragment.BackHandledInterface;
 import com.dazhentech.faithchallengea.challenge.countdownfragment.CountDownFragment;
 import com.dazhentech.faithchallengea.challenge.failfragment.FailFragment;
@@ -25,8 +29,14 @@ import com.dazhentech.faithchallengea.challenge.succeedfragment.SucceedFragment;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class ChallengeActivity extends BaseActivity implements CountDownFragment.OnFragmentInteractionListener,StartFragment.OnFragmentInteractionListener,
 FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteractionListener, BackHandledInterface, FinishFragment.OnFragmentInteractionListener {
@@ -38,6 +48,7 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     FinishFragment finishFragment;
     FragmentManager fragmentManager;
     SharedPreferences config;
+    ChallengeRecord challengeRecord;
 
 //    FragmentTransaction ft;
 
@@ -152,6 +163,13 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         succeedFragment = new SucceedFragment();
         ft.replace(R.id.challenge_container,succeedFragment);
         ft.commit();
+        if(challengeRecord!=null){
+            System.out.println("1111111111+"+challengeRecord.getDay());
+        }
+        challengeRecord.setScore(config.getInt("thistrialsum",0));
+        SharedPreferences.Editor editor = config.edit();
+        editor.putInt("thistrialstatus",1);
+        challengeRecord.setResult(true);
     }
 
     @Override
@@ -163,18 +181,49 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
         ft.commit();
     }
 
+    private Handler handler = new Handler();
+
     @Override
     public void onButtonClicked(String selectedTag) {
-        SharedPreferences.Editor editor = config.edit();
+        final SharedPreferences.Editor editor = config.edit();
         editor.putBoolean("lastcombo",false);
         editor.putInt("lastadd",0);
         editor.putInt("thistrialsum",0);
+        editor.putInt("thistrialstatus",0);
+        editor.putLong("trailstarttime",System.currentTimeMillis());
+        editor.putInt("trialindex",1);
+        editor.putString("trialgain","");
         editor.apply();
         pendingChallenge = true;
         FragmentTransaction ft = fragmentManager.beginTransaction();
         countDownFragment = new CountDownFragment();
         ft.replace(R.id.challenge_container,countDownFragment);
         ft.commit();
+        challengeRecord = new ChallengeRecord();
+        challengeRecord.setCost(100);
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        System.out.println("格式化后的日期"+sdf.format(d));
+        challengeRecord.setUser(BmobUser.getCurrentUser(AppUser.class));
+        challengeRecord.setDay(sdf.format(d));
+        challengeRecord.setPeriod_minute(12000);
+        challengeRecord.setScore(0);
+        challengeRecord.setTag(selectedTag);
+//        challengeRecord.save(new SaveListener<String>() {
+//            @Override
+//            public void done(String s, BmobException e) {
+//                if(e==null){
+//                    final String str = s;
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            editor.putString("thistrialid",str);
+//                        }
+//                    });
+//                }
+//
+//            }
+//        });
     }
 
     @Override
@@ -227,7 +276,19 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     }
 
     @Override
-    public void onSucceedSubmitButtonClick() {
+    public void onSucceedSubmitButtonClick(String gain) {
+        challengeRecord.setReal_gain(gain);
+//        System.out.println(challengeRecord.getTag()+challengeRecord.getReal_gain()+challengeRecord.getDay()+String.valueOf(challengeRecord.getResult()));
+        challengeRecord.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if(e==null){
+                    System.out.println("创建数据成功：" + s);
+                }else{
+                    System.out.println("bmob"+"失败："+e.getMessage()+","+e.getErrorCode());
+                }
+            }
+        });
         finish();
     }
 }

@@ -21,7 +21,9 @@ public class AppUser extends BmobUser {
     private Integer c_count;
     private Integer c_success;
     private Integer c_failure;
-
+    private Integer body;
+    private Integer heart;
+    private Integer profession;
 
     public Integer getAge() {
         return age;
@@ -45,5 +47,61 @@ public class AppUser extends BmobUser {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public UserAccount getAccount() {
+        return account;
+    }
+
+    public void setAccount(UserAccount account) {
+        this.account = account;
+    }
+
+    public Integer getC_count() {
+        return c_count;
+    }
+
+    public void setC_count(Integer c_count) {
+        this.c_count = c_count;
+    }
+
+    public Integer getC_success() {
+        return c_success;
+    }
+
+    public void setC_success(Integer c_success) {
+        this.c_success = c_success;
+    }
+
+    public Integer getC_failure() {
+        return c_failure;
+    }
+
+    public void setC_failure(Integer c_failure) {
+        this.c_failure = c_failure;
+    }
+
+    public Integer getBody() {
+        return body;
+    }
+
+    public void setBody(Integer body) {
+        this.body = body;
+    }
+
+    public Integer getHeart() {
+        return heart;
+    }
+
+    public void setHeart(Integer heart) {
+        this.heart = heart;
+    }
+
+    public Integer getProfession() {
+        return profession;
+    }
+
+    public void setProfession(Integer profession) {
+        this.profession = profession;
     }
 }
