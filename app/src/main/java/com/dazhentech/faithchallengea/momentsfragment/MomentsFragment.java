@@ -139,8 +139,8 @@ public class MomentsFragment extends Fragment {
 
     private void initContent() {
         tabIndicators = new ArrayList<>();
-        tabIndicators.add("未来");
-        tabIndicators.add("伙伴");
+        tabIndicators.add("过去");
+        tabIndicators.add("现在");
         tabFragments = new ArrayList<>();
         for ( String s:tabIndicators){
             mTablayout.addTab(mTablayout.newTab().setText(s));

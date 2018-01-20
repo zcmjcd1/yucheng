@@ -1,6 +1,9 @@
 package com.dazhentech.faithchallengea;
 
 import android.app.Application;
+import android.content.Context;
+
+import com.dazhentech.faithchallengea.utils.UIUtils;
 
 import cn.bmob.v3.Bmob;
 
@@ -10,6 +13,8 @@ import cn.bmob.v3.Bmob;
 
 public class MyApp extends Application {
     private static final String BMOB_APP_ID = "7175accbb6dd46bfae4493ef1a7cbe33";
+
+    private static MyApp instance;
 
     @Override
     public void onCreate() {
@@ -21,6 +26,9 @@ public class MyApp extends Application {
             e.printStackTrace();
         }
 
+    }
+    public static Context getApplication() {
+        return instance;
     }
 }
 

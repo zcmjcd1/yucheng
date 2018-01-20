@@ -8,22 +8,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/idea_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="12.5dp"
-            android:background="@color/post_bg"
-            android:gravity="top"
-            android:hint="挑战内容..."
-            android:inputType="textMultiLine"
-            android:minHeight="100dp"
-            android:textColor="@color/post_text"
-            android:textColorHint="@color/post_hint"
-            android:textSize="@dimen/post_content_font" />
         <RadioGroup
             android:id="@+id/start_radio_group"
             android:layout_width="match_parent"

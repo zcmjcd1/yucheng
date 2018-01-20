@@ -18,6 +18,11 @@ import com.dazhentech.faithchallengea.R;
  * Use the {@link MomentsListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
+//最开始一个条幅，是每日第一名的一句话，后面会by---username头像，如果他不发就给他一口毒奶。
+    //然后是今日奖池金额，报名人数，当前排名和当前毅力点和前一名后一名的毅力点和预计奖金
+// ，下拉刷新，然后一个小button导航到昨日的总结页
 public class MomentsListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
