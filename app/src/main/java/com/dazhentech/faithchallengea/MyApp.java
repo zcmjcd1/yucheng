@@ -2,6 +2,8 @@ package com.dazhentech.faithchallengea;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import cn.bmob.v3.Bmob;
 
 /**
@@ -17,6 +19,7 @@ public class MyApp extends Application {
         try{
             System.out.println("11111111111111111");
             Bmob.initialize(this, BMOB_APP_ID);
+            Fresco.initialize(this);
         }catch (Exception e){
             e.printStackTrace();
         }

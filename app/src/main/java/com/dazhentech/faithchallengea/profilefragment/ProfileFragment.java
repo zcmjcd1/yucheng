@@ -1,6 +1,7 @@
 package com.dazhentech.faithchallengea.profilefragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dazhentech.faithchallengea.R;
+import com.dazhentech.faithchallengea.views.CircleProgress;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +31,15 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    //圆形progressbar颜色相关设置
+    private int preColor = Color.parseColor("#6bb849");//完成部分的颜色
+    private int progressColor = Color.parseColor("#C0C0C0");//剩余部分的颜色  C0C0C0
+    private int CircleColor = Color.parseColor("#FFFFFF");//中心圆圈颜色
+    private int textColor = Color.parseColor("#9bb879");
+    private CircleProgress pv_body;
+    private CircleProgress pv_metal;
+    private CircleProgress pv_major;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -64,8 +75,21 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        pv_body = (CircleProgress) view.findViewById(R.id.progressview_body);
+        pv_metal = (CircleProgress) view.findViewById(R.id.progressview_metal);
+        pv_major = (CircleProgress) view.findViewById(R.id.progressview_major);
+        pv_body.setTextColor(textColor).setCircleBackgroud(CircleColor)
+                .setPreProgress(progressColor).setProgress(preColor)
+                .setProdressWidth(50).setPaddingscale(0.8f);
+        pv_metal.setTextColor(textColor).setCircleBackgroud(CircleColor)
+                .setPreProgress(progressColor).setProgress(preColor)
+                .setProdressWidth(50).setPaddingscale(0.8f);
+        pv_major.setTextColor(textColor).setCircleBackgroud(CircleColor)
+                .setPreProgress(progressColor).setProgress(preColor)
+                .setProdressWidth(50).setPaddingscale(0.8f);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
