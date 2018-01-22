@@ -89,6 +89,12 @@ public class SucceedFragment extends Fragment implements View.OnClickListener {
             config = getContext().getApplicationContext().getSharedPreferences("Mytrials",Context.MODE_PRIVATE);
             String str = String.format(Locale.US,"毅力点+%d",config.getInt("thistrialsum",0));
             score.setText(str);
+            String str2 = String.format(Locale.US,"体质+%d",config.getInt("thistrialbody",0));
+            body.setText(str2);
+            String str3 = String.format(Locale.US,"心灵+%d",config.getInt("thistrialheart",0));
+            heart.setText(str3);
+            String str4 = String.format(Locale.US,"专业+%d",config.getInt("thistrialprofession",0));
+            profession.setText(str4);
         }catch (Exception e){
             e.printStackTrace();
         }

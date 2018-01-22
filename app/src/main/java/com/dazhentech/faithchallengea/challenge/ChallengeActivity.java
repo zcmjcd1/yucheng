@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class ChallengeActivity extends BaseActivity implements CountDownFragment.OnFragmentInteractionListener,StartFragment.OnFragmentInteractionListener,
 FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteractionListener, BackHandledInterface, FinishFragment.OnFragmentInteractionListener {
@@ -49,6 +51,7 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     FragmentManager fragmentManager;
     SharedPreferences config;
     ChallengeRecord challengeRecord;
+    AppUser appUser;
 
 //    FragmentTransaction ft;
 
@@ -140,9 +143,22 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     @Override
     public void onTimeout() {
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        failFragment = new FailFragment();
-        ft.replace(R.id.challenge_container,failFragment);
-        ft.commit();
+        SharedPreferences.Editor editor = config.edit();
+        if(config.getBoolean("fristfail",true)){
+            failFragment = new FailFragment();
+            ft.replace(R.id.challenge_container,failFragment);
+            ft.commit();
+            challengeRecord.setResult(false);
+            challengeRecord.save();
+            editor.putBoolean("firstfail",false);
+        }else{
+            finishFragment = new FinishFragment();
+            ft.replace(R.id.challenge_container,finishFragment);
+            ft.commit();
+        }
+
+        editor.putInt("thistrialstatus",2);
+        editor.apply();
     }
 
     public void updateThisTrialSccore(){
@@ -159,26 +175,44 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     @Override
     public void onTrialFinish() {
         updateThisTrialSccore();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        succeedFragment = new SucceedFragment();
-        ft.replace(R.id.challenge_container,succeedFragment);
-        ft.commit();
         if(challengeRecord!=null){
             System.out.println("1111111111+"+challengeRecord.getDay());
         }
         challengeRecord.setScore(config.getInt("thistrialsum",0));
-        SharedPreferences.Editor editor = config.edit();
-        editor.putInt("thistrialstatus",1);
+        setThreeProperties();
         challengeRecord.setResult(true);
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        succeedFragment = new SucceedFragment();
+        ft.replace(R.id.challenge_container,succeedFragment);
+        ft.commit();
     }
 
     @Override
     public void onRepeatTrial() {
         updateThisTrialSccore();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        countDownFragment = new CountDownFragment();
-        ft.replace(R.id.challenge_container,countDownFragment);
+        startFragment = new StartFragment();
+        ft.replace(R.id.challenge_container,startFragment);
         ft.commit();
+        setThreeProperties();
+    }
+    public void setThreeProperties(){
+        SharedPreferences.Editor editor = config.edit();
+        editor.putInt("thistrialstatus",1);
+        System.out.println("currenttag"+config.getString("currenttag",""));
+        switch(config.getString("currenttag","")){
+            case "body":
+                editor.putInt("thistrialbody",config.getInt("thistrialbody",0)+1);
+                break;
+            case "heart":
+                System.out.println("5555555555555555");
+                editor.putInt("thistrialheart",config.getInt("thistrialheart",0)+1);
+                break;
+            case "profession":
+                editor.putInt("thistrialprofession",config.getInt("thistrialprofession",0)+1);
+                break;
+        }
+        editor.apply();
     }
 
     private Handler handler = new Handler();
@@ -186,13 +220,22 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
     @Override
     public void onButtonClicked(String selectedTag) {
         final SharedPreferences.Editor editor = config.edit();
-        editor.putBoolean("lastcombo",false);
-        editor.putInt("lastadd",0);
-        editor.putInt("thistrialsum",0);
-        editor.putInt("thistrialstatus",0);
-        editor.putLong("trailstarttime",System.currentTimeMillis());
-        editor.putInt("trialindex",1);
-        editor.putString("trialgain","");
+        if (config.getBoolean("firststart",true)){
+            editor.putBoolean("lastcombo",false);
+            editor.putInt("lastadd",0);
+            editor.putInt("thistrialsum",0);
+            editor.putInt("thistrialstatus",0);
+            editor.putLong("trailstarttime",System.currentTimeMillis());
+            editor.putInt("trialindex",1);
+            editor.putString("trialgain","");
+            editor.putBoolean("firststart",false);
+            editor.putBoolean("firstfail",true);
+            editor.putInt("thistrialbody",0);
+            editor.putInt("thistrialheart",0);
+            editor.putInt("thistrialprofession",0);
+        }
+        editor.putString("currenttag",selectedTag);
+
         editor.apply();
         pendingChallenge = true;
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -289,6 +332,25 @@ FailFragment.OnFragmentInteractionListener,SucceedFragment.OnFragmentInteraction
                 }
             }
         });
-        finish();
+        appUser = BmobUser.getCurrentUser(AppUser.class);
+        appUser.increment("body",config.getInt("thistrialbody",0));
+        appUser.increment("heart",config.getInt("thistrialheart",0));
+        appUser.increment("profession",config.getInt("thistrialprofession",0));
+        SharedPreferences.Editor editor = config.edit();
+        editor.putBoolean("firststart",true);
+        editor.apply();
+        appUser.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if(e==null){
+                    Log.i("bmob","成功");
+                    finish();
+                }else{
+                    Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                }
+            }
+        });
+
+
     }
 }
