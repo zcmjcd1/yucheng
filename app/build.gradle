@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -30,7 +30,9 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.5.8'
     compile 'cn.bmob.android:bmob-push:0.8'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:26.+'
+    releaseImplementation 'com.android.support:support-v4:26.+'
     compile 'com.github.iwgang:countdownview:2.1.6'
+    compile 'com.facebook.fresco:fresco:0.12.0'
+    compile 'com.facebook.fresco:webpsupport:0.12.0'
     testCompile 'junit:junit:4.12'
 }
