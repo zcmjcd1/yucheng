@@ -157,5 +157,6 @@ public class MomentsFragment extends Fragment {
         ViewCompat.setElevation(mTablayout,10);
         mTablayout.setupWithViewPager(mContentVp);
         mTablayout.setTabsFromPagerAdapter(mFragmentAdapterAdapter);
+        mTablayout.getTabAt(1).select();
     }
 }
